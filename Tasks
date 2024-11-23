@@ -1,0 +1,10 @@
+Test injection script
+    - Validate they're getting installed at the write locations
+    - Validate they're executing on download
+        - PDF in the front w/ reverse in the background
+
+
+Test reverse shell connection
+    - Does it open and loop until the correct condition comes through
+        - Connector sends disconnect command
+        - Connector can retreive the contents of the key logger and cat it back
